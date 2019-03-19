@@ -1,3 +1,9 @@
 .classpath
 .project
 .settings/*
+think-in-java/target/*
+think-in-java/.classpath
+think-in-java/.gitignore
+think-in-java/.project
+think-in-java/.settings/*
+think-in-java/.gitignore
