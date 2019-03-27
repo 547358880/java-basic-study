@@ -26,5 +26,7 @@
 
   <modules>
     <module>think-in-java</module>
+    <module>how2j.cn-study</module>
+    <module>core-java</module>
   </modules>
 </project>
