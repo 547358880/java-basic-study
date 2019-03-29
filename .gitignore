@@ -29,3 +29,10 @@ core-java/chapter3/.gitignore
 core-java/chapter3/.project
 core-java/chapter3/.settings/*
 core-java/chapter3/.gitignore
+
+core-java/jdbc/target/*
+core-java/jdbc/.classpath
+core-java/jdbc/.gitignore
+core-java/jdbc/.project
+core-java/jdbc/.settings/*
+core-java/jdbc/.gitignore

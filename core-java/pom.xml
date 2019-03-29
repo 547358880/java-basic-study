@@ -12,8 +12,9 @@
  
   <artifactId>core-java</artifactId>
   <name>core-java</name>
-  <url>http://maven.apache.org</url>
+  
   <modules>
   	<module>chapter3</module>
+  	<module>jdbc</module>
   </modules>
 </project>
