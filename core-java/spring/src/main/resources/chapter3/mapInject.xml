@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="mapBean" class="org.spring.chapter3.MapTestBean">
+  	<property name="values">
+  		<map key-type="java.lang.String" value-type="java.lang.String">
+  			<entry>
+  				<key><value>1</value></key>		<!-- <Key>表示键数据 -->
+  				<value>11</value>
+  			</entry>
+  			
+  			<entry key="2" value="2" />
+  		</map>
+  	</property>
+  </bean>
+
+</beans>

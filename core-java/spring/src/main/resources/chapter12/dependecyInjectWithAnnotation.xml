@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <context:annotation-config />		
+
+  <bean id="testBean" class="org.spring.chapter12.TestBean">
+  	<property name="message" ref="message" />
+  </bean>
+ 
+  <bean id="testBean11" class="org.spring.chapter12.TestBean11" />
+  <bean id="testBean12" class="org.spring.chapter12.TestBean12" />
+  <bean id="testBean13" class="org.spring.chapter12.TestBean13" />
+  <bean id="testBean14" class="org.spring.chapter12.TestBean14" />
+  <bean id="testBean21" class="org.spring.chapter12.TestBean21" />
+  <bean id="testBean22" class="org.spring.chapter12.TestBean22" />
+  
+  <bean id="message" class="java.lang.String">
+  	<constructor-arg index="0" value="Hello" />
+  </bean>
+  
+  <bean id="list" class="java.util.ArrayList">
+  	<constructor-arg index="0">
+  		<list>
+  			<ref bean="message"/>
+  			<ref bean="message"/>
+  		</list>
+  	</constructor-arg>
+  </bean>
+
+</beans>

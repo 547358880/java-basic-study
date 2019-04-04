@@ -19,12 +19,12 @@ import javax.sql.DataSource;
 /*
  * Java数据库连接池的实现
  */
-public class JdbcPool implements DataSource
+public class JdbcPool2 implements DataSource
 {
 	private static LinkedList<Connection> listConnections = new LinkedList<>();
 	
 	static {
-		InputStream in = JdbcPool.class.getClassLoader().getResourceAsStream("db.properties");
+		InputStream in = JdbcPool2.class.getClassLoader().getResourceAsStream("db.properties");
 		Properties prop = new Properties();
 		try {
 			prop.load(in);
@@ -103,29 +103,33 @@ public class JdbcPool implements DataSource
 	@Override
 	public synchronized Connection getConnection() throws SQLException 
 	{
-		if (listConnections.size() > 0) {
-			final Connection conn = listConnections.removeFirst();
-			System.out.println("listConnections数据库连接池大小是" + listConnections.size());
-			return (Connection) Proxy.newProxyInstance(JdbcPool.class.getClassLoader(), conn.getClass().getInterfaces(), 
-					new InvocationHandler() {
-						
-						@Override
-						public Object invoke(Object proxy, Method method, Object[] args) throws Throwable 
-						{
-							if (!method.getName().equals("close")) {
-								return method.invoke(conn, args);
-							} else {
-								listConnections.add(conn);
-								System.out.println(conn + "被还给listConnections数据库连接池了！！");
-						        System.out.println("listConnections数据库连接池大小为" + listConnections.size());
-								return null;
-							}
+		if (listConnections.isEmpty()) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} 
+		
+		final Connection conn = listConnections.removeFirst();
+		System.out.println("listConnections数据库连接池大小是" + listConnections.size());
+		return (Connection) Proxy.newProxyInstance(JdbcPool2.class.getClassLoader(), conn.getClass().getInterfaces(), 
+				new InvocationHandler() {
+					
+					@Override
+					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable 
+					{
+						if (!method.getName().equals("close")) {
+							return method.invoke(conn, args);
+						} else {
+							listConnections.add(conn);
+							System.out.println(conn + "被还给listConnections数据库连接池了！！");
+					        System.out.println("listConnections数据库连接池大小为" + listConnections.size());
+					        this.notifyAll();
+							return null;
 						}
-					});
-			
-		} else {
-			throw new RuntimeException("对不起， 数据库忙!");
-		}
+					}
+				});
 	}
 
 	@Override

@@ -23,6 +23,8 @@ public class JdbcAutoIncrement
 			conn = JdbcUtils.getConnection();
 			String sql = "insert into test1(name) values(?)";
 			st = conn.prepareStatement(sql);
+			st.setString(1, "aaa");
+			st.executeUpdate();
 			// 获取数据库自动生成的主键
 			rs = st.getGeneratedKeys();
 			if (rs.next()) {

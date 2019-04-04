@@ -25,7 +25,11 @@ Statement对象用于想数据库发送Sql语句,常用方法与:
 - executeUpdate(String sql): 用于向数据库发送insert, update或delete
 - execute(String sql): 用于向数据库发送任意sql语句
 - addBatch(String sql): 把多条语句放到一个批处理中
-- executeBatch(): 向数据库发送一批sql语句执行
+- executeBatch(): 向数据库发送一批sql语句执行  
+
+**execute和executeUpdate的区别：**
+1. execute可以执行查询语句, 然后通过getResultSet把结果集取出来 , executeUpdate不能执行查询语句 
+2. execute返回boolean类型， true表示执行的是查询语句， false表示是其他l executeUpdate返回的是int, 表示有多少条数据收到了影响
 
 #### Resultset类
 ResultSet用于代表sql语句的执行结果
@@ -66,4 +70,56 @@ ResultSet还提供了对结果集进行滚动的方法:
 - getColumnCount() 返回resultset对象的列数
 - getColumnName(int column) 获得指定列的名称
 - getColumnTypeName(int column)获得指定类的类型
+
+#### Spring Jdbc
+- support包: 提供将JDBC异常转换为DAO非检查异常转换类,一些工具类如JdbcUtils等
+- datasource报: 提供简化访问JDBC数据源(javax.sql.DataSource实现)工具类， 并提供了一些DataSource简单实现类从而使这些DataSource获取的连接能自动得到Spring管理事务支持
+- core包：提供JDBC模块类实现及可变部分的回调接口
+- object包: 提供关系数据库的对象表现形式
+
+##### JdbcTemplate主要提供以下5类方法
+- execute方法: 用于执行任何SQL语句, 一般执行DDL语句;
+- update方法以及batchUpdate: update方法用于执行新增， 修改， 删除等语句; batchUpdate方法用于执行批处理相关语句;
+- query和queryForXXX方法: 用于执行查询相关语句;
+- call方法: 用于执行存储过程， 函数相关语句;
+
+##### JdbcTemplate类支持的回调:
+
+###### 预编译语句及存储过程创建回调:
+- **PreparedStatementCreator:** 通过回调获取JdbcTemplate提供的Connection,由用户使用该Connection创建相关的PreparedStatement;
+- **CallableStatementCreator:** 通过回调获取JdbcTemplate提供的Connectionm 由用户使用该Connection创建相关的CallableStatement;  
+
+###### 预编译语句没值回调:用于给预编译语句相应参数设值
+- **PreaoredStatementSetter:** 通过回调获取JdbcTemplate提供的PreparedStatement, 由用户来对相应的预编译语句相应参数设值;
+- **BatchPreparedStatementSetter:** 批处理相关参数设值
+
+###### 自定义回调:
+- **ConnectionCallback:** 通过回调获取JdbcTemplate提供的Connection, 用户可在该Connection执行任何数量的操作;
+- **StatementCallback:** 通过回调获取JdbcTemplate提供的Statement, 用户可以在该Statement执行任何数量的操作;
+- **PreparedStatementCallback:** 通过回调获取JdbcTemplate提供的PreparedStatement
+- **CallableStatementCallback:** 通过回调获取CallableStatement
+
+###### 结果处理回调:通过回调处理ResultSet或将ResultSet转换为需要的形式
+- **RowMapper:**用户将结果集每行数据转换为需要的类型， 用户需实现方法mapRow(ResultSet rs, int rowNum)来完成将每行数据转换为相应的类型
+- **RowCallbackHandler:** 用于处理ResultSet的每一行数据
+- **ResultSetExtractor:** 用于数据集提取，用户需要实现extractData(ResultSet rs)来出来结果集， 用户必须出来整个结果集
+
+##### SimpleJdbc方式
+1. **SimpleJdbcInsert:** 用户插入数据， 根据数据库元数据进行插入数据， 本类简化插入操作， 提供了三种类型方法:  
+	- execute普通插入  
+	- executeAndReturnKey及executeAndReturnHolder方法用于插入时获取主键值
+	- executeBatch用于批处理
+
+###### 类型参数
+**不能实例话类型变量像 new T(...), new T[], T.class等**
+**不能构造泛型数组**	
+**泛型类的静态上下文中类型变量无效**
+	
+##### 控制数据库连接
+SpringJDBC通过DataSource控制数据库连接, 即通过DataSource实现获取数据库连接
+- DriverManagerDataSource: 简单封装了DriverManager获取数据库连接; 通过DriverManager的getConnection方法获取数据库连接;
+- SingleConnectionDataSource: 内部封装了一个连接,该连接使用后不会关闭
+- LazyConnectionDataSourceProxy: 包装了一个DataSource, 用于延迟获取数据库连接吗，只有在创建Statement时才获取连接
+
+
 	

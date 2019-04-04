@@ -36,3 +36,10 @@ core-java/jdbc/.gitignore
 core-java/jdbc/.project
 core-java/jdbc/.settings/*
 core-java/jdbc/.gitignore
+
+core-java/spring/target/*
+core-java/spring/.classpath
+core-java/spring/.gitignore
+core-java/spring/.project
+core-java/spring/.settings/*
+core-java/spring/.gitignore

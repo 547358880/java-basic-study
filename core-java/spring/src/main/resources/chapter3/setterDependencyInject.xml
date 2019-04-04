@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <!-- 通过setter方式进行依赖注入 -->	
+  <bean id="bySetter" class="org.spring.chapter3.HelloImpl4">
+  	<property name="message" value="Hello World bySetter!" />
+  	<property name="index"><value>1</value></property>
+  </bean>	
+
+</beans>
